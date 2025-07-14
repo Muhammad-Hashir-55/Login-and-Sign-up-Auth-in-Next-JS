@@ -73,7 +73,7 @@ export default function Login() {
         {/* Navigation */}
         <div className="flex flex-col items-center gap-2 mt-6 text-sm">
           <p>
-            Don&apos;t have an account?{' '}
+            Don&apos;t have an account?
             <button
               onClick={() => router.push('/signup')}
               className="text-green-600 hover:text-green-700 underline transition"

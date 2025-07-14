@@ -10,17 +10,18 @@ export default function HomePage() {
   const [userEmail, setUserEmail] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserEmail(user.email);
-        setLoading(false);
-      } else {
-        router.push('/login');
-      }
-    });
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setUserEmail(user.email);
+      setLoading(false);
+    } else {
+      router.push('/login');
+    }
+  });
 
-    return () => unsubscribe(); // Clean up the listener
-  }, []);
+  return () => unsubscribe();
+}, [router]);  // ✅ Add router to dependency array
+
 
   const handleLogout = async () => {
     await signOut(auth);
