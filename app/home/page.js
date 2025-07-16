@@ -1,27 +1,42 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { ref, get } from 'firebase/database';
 import { useRouter } from 'next/navigation';
-import { auth } from '../../firebase';
+import { auth, database } from '../../firebase';
 
 export default function HomePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState(null);
+  const [userData, setUserData] = useState({ username: '', phone: '', city: '' });
 
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUserEmail(user.email);
-      setLoading(false);
-    } else {
-      router.push('/login');
-    }
-  });
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserEmail(user.email);
 
-  return () => unsubscribe();
-}, [router]);  // ✅ Add router to dependency array
+        // ✅ Fetch user data from Realtime DB
+        const userRef = ref(database, `users/${user.uid}`);
+        const snapshot = await get(userRef);
 
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          setUserData({
+            username: data.username || '',
+            phone: data.phone || '',
+            city: data.city || '',
+          });
+        }
+
+        setLoading(false);
+      } else {
+        router.push('/login');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -34,7 +49,12 @@ export default function HomePage() {
     <div className="flex items-center justify-center h-screen bg-gray-50 px-4">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center">
         <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to Homepage 🎉</h1>
-        <p className="text-lg text-gray-600 mb-6">Logged in as: <span className="font-semibold">{userEmail}</span></p>
+        <p className="text-lg text-gray-700 mb-1">
+          Logged in as: <span className="font-semibold">{userEmail}</span>
+        </p>
+        <p className="text-md text-gray-600">Username: <span className="font-semibold">{userData.username}</span></p>
+        <p className="text-md text-gray-600">Phone: <span className="font-semibold">{userData.phone}</span></p>
+        <p className="text-md text-gray-600 mb-6">City: <span className="font-semibold">{userData.city}</span></p>
 
         <div className="flex flex-col gap-4">
           <button
