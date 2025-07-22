@@ -4,6 +4,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { ref, get } from 'firebase/database';
 import { useRouter } from 'next/navigation';
 import { auth, database } from '../../firebase';
+import Script from 'next/script';
 
 export default function HomePage() {
   const router = useRouter();
@@ -16,7 +17,6 @@ export default function HomePage() {
       if (user) {
         setUserEmail(user.email);
 
-        // ✅ Fetch user data from Realtime DB
         const userRef = ref(database, `users/${user.uid}`);
         const snapshot = await get(userRef);
 
@@ -46,32 +46,49 @@ export default function HomePage() {
   if (loading) return <p className="text-center mt-10">Checking authentication...</p>;
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50 px-4">
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center">
-        <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to Homepage 🎉</h1>
-        <p className="text-lg text-gray-700 mb-1">
-          Logged in as: <span className="font-semibold">{userEmail}</span>
-        </p>
-        <p className="text-md text-gray-600">Username: <span className="font-semibold">{userData.username}</span></p>
-        <p className="text-md text-gray-600">Phone: <span className="font-semibold">{userData.phone}</span></p>
-        <p className="text-md text-gray-600 mb-6">City: <span className="font-semibold">{userData.city}</span></p>
+    <>
+      {/* ✅ Load Dialogflow script */}
+      <Script
+        src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"
+        strategy="afterInteractive"
+      />
 
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition"
-          >
-            Logout
-          </button>
+      {/* ✅ Your UI */}
+      <div className="flex items-center justify-center h-screen bg-gray-50 px-4 relative">
+        <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center">
+          <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to Homepage 🎉</h1>
+          <p className="text-lg text-gray-700 mb-1">
+            Logged in as: <span className="font-semibold">{userEmail}</span>
+          </p>
+          <p className="text-md text-gray-600">Username: <span className="font-semibold">{userData.username}</span></p>
+          <p className="text-md text-gray-600">Phone: <span className="font-semibold">{userData.phone}</span></p>
+          <p className="text-md text-gray-600 mb-6">City: <span className="font-semibold">{userData.city}</span></p>
 
-          <button
-            onClick={() => router.push('/')}
-            className="text-gray-600 hover:text-gray-800 underline transition"
-          >
-            ⬅ Back to Start Page
-          </button>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition"
+            >
+              Logout
+            </button>
+
+            <button
+              onClick={() => router.push('/')}
+              className="text-gray-600 hover:text-gray-800 underline transition"
+            >
+              ⬅ Back to Start Page
+            </button>
+          </div>
         </div>
+
+        {/* ✅ Chatbot Widget */}
+        <df-messenger
+          intent="WELCOME"
+          chat-title="KhudaHafizAssistant"
+          agent-id="f6b9ec20-b62f-482e-b185-566f0767329e"
+          language-code="en"
+        ></df-messenger>
       </div>
-    </div>
+    </>
   );
 }
