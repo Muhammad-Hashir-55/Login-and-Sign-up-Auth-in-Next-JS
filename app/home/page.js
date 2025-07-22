@@ -16,10 +16,8 @@ export default function HomePage() {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUserEmail(user.email);
-
         const userRef = ref(database, `users/${user.uid}`);
         const snapshot = await get(userRef);
-
         if (snapshot.exists()) {
           const data = snapshot.val();
           setUserData({
@@ -28,7 +26,6 @@ export default function HomePage() {
             city: data.city || '',
           });
         }
-
         setLoading(false);
       } else {
         router.push('/login');
@@ -52,9 +49,21 @@ export default function HomePage() {
         src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"
         strategy="afterInteractive"
       />
+      
+      {/* ✅ Fix Chatbot Positioning */}
+      <Script id="df-messenger-style" strategy="afterInteractive">
+        {`
+          df-messenger {
+            position: fixed !important;
+            bottom: 16px;
+            right: 16px;
+            z-index: 999;
+          }
+        `}
+      </Script>
 
-      {/* ✅ Your UI */}
-      <div className="flex items-center justify-center h-screen bg-gray-50 px-4 relative">
+      {/* ✅ UI Content */}
+      <div className="flex items-center justify-center h-screen bg-gray-50 px-4">
         <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center">
           <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to Homepage 🎉</h1>
           <p className="text-lg text-gray-700 mb-1">
@@ -71,7 +80,6 @@ export default function HomePage() {
             >
               Logout
             </button>
-
             <button
               onClick={() => router.push('/')}
               className="text-gray-600 hover:text-gray-800 underline transition"
@@ -80,15 +88,15 @@ export default function HomePage() {
             </button>
           </div>
         </div>
-
-        {/* ✅ Chatbot Widget */}
-        <df-messenger
-          intent="WELCOME"
-          chat-title="KhudaHafizAssistant"
-          agent-id="f6b9ec20-b62f-482e-b185-566f0767329e"
-          language-code="en"
-        ></df-messenger>
       </div>
+
+      {/* ✅ Chatbot Widget */}
+      <df-messenger
+        intent="WELCOME"
+        chat-title="KhudaHafizAssistant"
+        agent-id="f6b9ec20-b62f-482e-b185-566f0767329e"
+        language-code="en"
+      ></df-messenger>
     </>
   );
 }
