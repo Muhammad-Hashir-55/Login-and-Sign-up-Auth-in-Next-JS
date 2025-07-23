@@ -13,6 +13,24 @@ export default function HomePage() {
   const [userData, setUserData] = useState({ username: '', phone: '', city: '' });
 
   useEffect(() => {
+    const setChatIcon = () => {
+      const dfMessenger = document.querySelector('df-messenger');
+      if (dfMessenger) {
+        dfMessenger.setAttribute(
+          'chat-icon',
+          'https://media.licdn.com/dms/image/v2/D4D0BAQFFJkDKmhLAmA/company-logo_200_200/B4DZa4wSplGYAI-/0/1746856389663/khudahafiz_logo?e=1756339200&v=beta&t=aZx7gguLMAIqfJcgvtXtwYUwI6QflDTxHb2WSNCXHsA'
+        );
+      }
+    };
+
+    window.addEventListener('dfMessengerLoaded', setChatIcon);
+
+    return () => {
+      window.removeEventListener('dfMessengerLoaded', setChatIcon);
+    };
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUserEmail(user.email);
@@ -97,6 +115,8 @@ export default function HomePage() {
         agent-id="f6b9ec20-b62f-482e-b185-566f0767329e"
         language-code="en"
       ></df-messenger>
+      
     </>
+    
   );
 }
