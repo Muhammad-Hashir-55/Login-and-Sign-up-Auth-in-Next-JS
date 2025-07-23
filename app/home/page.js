@@ -114,6 +114,7 @@ export default function HomePage() {
         chat-title="KhudaHafizAssistant"
         agent-id="f6b9ec20-b62f-482e-b185-566f0767329e"
         language-code="en"
+        chat-icon="https://media.licdn.com/dms/image/v2/D4D0BAQFFJkDKmhLAmA/company-logo_200_200/B4DZa4wSplGYAI-/0/1746856389663/khudahafiz_logo?e=1756339200&v=beta&t=aZx7gguLMAIqfJcgvtXtwYUwI6QflDTxHb2WSNCXHsA"
       ></df-messenger>
       
     </>
