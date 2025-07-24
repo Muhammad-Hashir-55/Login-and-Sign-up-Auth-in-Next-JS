@@ -12,23 +12,7 @@ export default function HomePage() {
   const [userEmail, setUserEmail] = useState(null);
   const [userData, setUserData] = useState({ username: '', phone: '', city: '' });
 
-  useEffect(() => {
-    const setChatIcon = () => {
-      const dfMessenger = document.querySelector('df-messenger');
-      if (dfMessenger) {
-        dfMessenger.setAttribute(
-          'chat-icon',
-          'https://media.licdn.com/dms/image/v2/D4D0BAQFFJkDKmhLAmA/company-logo_200_200/B4DZa4wSplGYAI-/0/1746856389663/khudahafiz_logo?e=1756339200&v=beta&t=aZx7gguLMAIqfJcgvtXtwYUwI6QflDTxHb2WSNCXHsA'
-        );
-      }
-    };
 
-    window.addEventListener('dfMessengerLoaded', setChatIcon);
-
-    return () => {
-      window.removeEventListener('dfMessengerLoaded', setChatIcon);
-    };
-  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -114,7 +98,7 @@ export default function HomePage() {
         chat-title="KhudaHafizAssistant"
         agent-id="f6b9ec20-b62f-482e-b185-566f0767329e"
         language-code="en"
-        chat-icon="https://media.licdn.com/dms/image/v2/D4D0BAQFFJkDKmhLAmA/company-logo_200_200/B4DZa4wSplGYAI-/0/1746856389663/khudahafiz_logo?e=1756339200&v=beta&t=aZx7gguLMAIqfJcgvtXtwYUwI6QflDTxHb2WSNCXHsA"
+        chat-icon="https://instagram.fskt12-1.fna.fbcdn.net/v/t51.2885-19/482749231_2277686359298366_270671872563719339_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fskt12-1.fna.fbcdn.net&_nc_cat=102&_nc_oc=Q6cZ2QHe08xG_zO1BqxBndE6jJusY8RQg-lCuzOuDSpX24aotVavGvpclDxsGlh3iWs9k2E&_nc_ohc=cKkK_kYQgpkQ7kNvwEZs3TH&_nc_gid=QXcwS92Sjd-uK2_yvcCA0Q&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfSwJohaNs3FadSpNY8QrMVFGiA1qg86U2UYs5mfvhfyIQ&oe=68879A15&_nc_sid=7a9f4b"
       ></df-messenger>
       
     </>
