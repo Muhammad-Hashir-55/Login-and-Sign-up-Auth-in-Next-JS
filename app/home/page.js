@@ -67,7 +67,7 @@ export default function HomePage() {
       {/* ✅ UI Content */}
       <div className="flex items-center justify-center h-screen bg-gray-50 px-4">
         <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center">
-          <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to Homepage 🎉</h1>
+          <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to Homepage</h1>
           <p className="text-lg text-gray-700 mb-1">
             Logged in as: <span className="font-semibold">{userEmail}</span>
           </p>

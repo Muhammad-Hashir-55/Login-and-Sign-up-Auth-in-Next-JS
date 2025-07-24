@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+df-messenger {
+      --df-messenger-button-titlebar-color: #7d4f16; /* Example: A shade of blue */
+      --df-messenger-chat-background-color: #f7f4f4; /* Example: Light gray */
+      --df-messenger-button-border-radius: 10px; /* Rounded corners */
+    }
